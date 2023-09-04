@@ -1,10 +1,14 @@
 import numpy as np
 from datetime import datetime, timedelta
+import os
+import constants
+
 
 def getDelay(begin, end):
 
     try:
-        return (str(datetime.strptime(end, '%d/%m/%Y %H:%M:%S') - datetime.strptime(begin, '%d/%m/%Y %H:%M:%S')))
+        # return (str(datetime.strptime(end, '%d/%m/%Y %H:%M:%S') - datetime.strptime(begin, '%d/%m/%Y %H:%M:%S')))
+        return (datetime.strptime(end, '%d/%m/%Y %H:%M:%S') - datetime.strptime(begin, '%d/%m/%Y %H:%M:%S'))
 
     except:
         print(begin, end)
@@ -33,3 +37,48 @@ def getPulseCount(minimalDelay, beginOfPulse, endOfPulse):
 
 def addDelay(totalDelay, beginOfDelay, endOfDelay):
     return totalDelay + (datetime.strptime(endOfDelay, '%d/%m/%Y %H:%M:%S') - datetime.strptime(beginOfDelay, '%d/%m/%Y %H:%M:%S'))
+
+
+def checkRisultDir():
+    if not os.path.exists(constants.DIRECTORY_FOR_RESULTS):
+        os.mkdir(constants.DIRECTORY_FOR_RESULT)
+
+
+def cleanArray(stats):
+    while stats[len(stats) - 1][1] != '0':
+        stats = np.delete(stats, len(stats) - 1, 0)
+    return stats
+
+
+def getDelayFilteredArray(stats, coloumn=2, delaySecs=15*60):
+    dt = timedelta(seconds=delaySecs)
+    i = 1
+    while i < len(stats):
+        if (stats[i][coloumn] < dt):
+            stats = np.delete(stats, i, 0)
+        else:
+            i += 1
+    return stats
+
+
+def getTotalDelay(stats, coloumn=2, delaySecs=15*60):
+    dt = timedelta(seconds=delaySecs)
+    totalDelay = timedelta(0)
+    i = 1
+    while i < len(stats):
+        if (stats[i][coloumn] > dt):
+            totalDelay += stats[i][coloumn]
+        i += 1
+    return totalDelay
+
+
+def changeDelayFormateToString(stats, coloumn=2):
+    i = 1
+    while i < len(stats):
+        stats[i][coloumn] = str(stats[i][coloumn])
+        i += 1
+    return stats
+
+
+def convertRowFromTimedeltaToStr(stats, row):
+    pass
