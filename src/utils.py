@@ -45,7 +45,7 @@ def checkRisultDir():
 
 
 def cleanArray(stats):
-    while stats[len(stats) - 1][1] != '0':
+    while stats[len(stats) - 1][1] != '0' and stats[len(stats) - 1][1] != 'Ошибка  255':
         stats = np.delete(stats, len(stats) - 1, 0)
     return stats
 
