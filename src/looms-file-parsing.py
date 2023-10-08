@@ -44,6 +44,9 @@ totalDelay15minutes = utils.getTotalDelay(resultArr, 2)
 
 resultArr = utils.getDelayFilteredArray(resultArr)
 
+variable = utils.getDelayAmountByPeriods(
+    resultArr, constants.CHECKING_PERIODS_BY_DEFAULT)
+
 resultArr = utils.changeDelayFormateToString(resultArr)
 
 resultArr = np.append(resultArr, ['Всего за период', '', str(totalPeriod)])

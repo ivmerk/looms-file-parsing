@@ -12,25 +12,29 @@ def getAllStopping(stats):
     isStop = False
     isError = False
 
+    print(constants.ControllerStatus.STOP.value,
+          constants.ControllerStatus.MISTAKE.value)
+
     while len(stats) != 1:
-        if stats[0][1] == '0':
+        if stats[0][1] == constants.ControllerStatus.STOP.value:
             isStop = True
             stats = np.delete(stats, 0, 0)
 
-        elif stats[0][1] != '0' and stats[0][1] != 'Ошибка  255' and stats[0][1] != '' and (isError or isStop):
+        elif stats[0][1] != constants.ControllerStatus.STOP.value and stats[0][1] != constants.ControllerStatus.MISTAKE.value and stats[0][1] != '' and (isError or isStop):
             isError = False
             isStop = False
             resultItem = [stats[0][0], 'Остановка']
-            while stats[0][1] != '0' and stats[0][1] != 'Ошибка  255':
+            while stats[0][1] != constants.ControllerStatus.STOP.value and stats[0][1] != constants.ControllerStatus.MISTAKE.value:
                 stats = np.delete(stats, 0, 0)
             resultItem = np.append(
                 resultItem, utils.getDelay(resultItem[0], stats[0][0]))
             resultArr = np.append(resultArr, resultItem)
 
-        elif stats[0][1] == 'Ошибка  255':
+        elif stats[0][1] == constants.ControllerStatus.MISTAKE.value:
             isError = True
-            resultItem = [stats[0][0], 'Ошибка  255']
-            while stats[0][1] == 'Ошибка  255':
+            resultItem = [stats[0][0],
+                          constants.ControllerStatus.MISTAKE.value]
+            while stats[0][1] == constants.ControllerStatus.MISTAKE.value:
                 stats = np.delete(stats, 0, 0)
             resultItem = np.append(
                 resultItem, utils.getDelay(resultItem[0], stats[0][0]))

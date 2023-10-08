@@ -72,6 +72,19 @@ def getTotalDelay(stats, coloumn=2, delaySecs=15*60):
     return totalDelay
 
 
+def getDelayAmountByPeriods(stats, periods, coloumnTime=0, colomnDelay=2):
+    summaryDelaysBySchedule = timedelta(0)
+    for period in periods:
+        i = 1
+        while i < len(stats):
+            stopingTime = datetime.strptime(
+                stats[i][coloumnTime], '%d/%m/%Y %H:%M:%S').strftime('%H:%M')
+            if (stopingTime > period[0] and stopingTime < period[1]):
+                summaryDelaysBySchedule += stats[i][colomnDelay]
+            i += 1
+    return summaryDelaysBySchedule
+
+
 def changeDelayFormateToString(stats, coloumn=2):
     i = 1
     while i < len(stats):

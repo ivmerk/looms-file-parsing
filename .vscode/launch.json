@@ -9,7 +9,7 @@
       "type": "python",
       "request": "launch",
       "program": "${file}",
-      "args": ["./inbox/TS10.xlsx"],
+      "args": ["./inbox/Aug23ТС5.xlsx"],
       "console": "integratedTerminal",
       "justMyCode": true
     }
